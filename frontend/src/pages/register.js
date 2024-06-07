@@ -4,7 +4,8 @@ import { register } from '../services/api';
 import './register.css'; // Importing a CSS file for styles
 
 const Register = () => {
-  const [username, setUsername] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -13,8 +14,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register({ username, password, email });
-      navigate('/login');
+      await register({ lastName: lastName, password: password, email: email, firstName: firstName }).then(() => navigate('/login'));
     } catch (error) {
       setError('Registration failed. Please try again.');
     }
@@ -26,11 +26,18 @@ const Register = () => {
         <h1 className="register-header">Sign Up</h1>
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit} className="register-form">
+        <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="firstName"
+            className="register-input"
+          />
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="lastName"
             className="register-input"
           />
           <input
